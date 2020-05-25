@@ -11,7 +11,6 @@
 
 import os
 from pathlib import Path
-from superdesk.default_settings import INSTALLED_APPS, strtobool
 
 
 def env(variable, fallback_value=None):
@@ -30,11 +29,6 @@ ABS_PATH = str(Path(__file__).resolve().parent)
 init_data = Path(ABS_PATH) / 'data'
 if init_data.exists():
     INIT_DATA_PATH = init_data
-
-INSTALLED_APPS.extend([
-    'analytics',
-    'apps.languages',
-])
 
 RENDITIONS = {
     'picture': {
@@ -59,10 +53,5 @@ if env('REDIS_PORT'):
 BROKER_URL = env('CELERY_BROKER_URL', REDIS_URL)
 
 SECRET_KEY = env('SECRET_KEY', '')
+PUBLISH_ASSOCIATED_ITEMS = True
 
-# Highcharts Export Server - default settings
-ANALYTICS_ENABLE_SCHEDULED_REPORTS = strtobool(
-    env('ANALYTICS_ENABLE_SCHEDULED_REPORTS', 'true')
-)
-HIGHCHARTS_SERVER_HOST = env('HIGHCHARTS_SERVER_HOST', 'localhost')
-HIGHCHARTS_SERVER_PORT = env('HIGHCHARTS_SERVER_PORT', '6060')

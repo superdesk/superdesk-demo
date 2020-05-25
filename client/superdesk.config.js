@@ -7,20 +7,44 @@
 module.exports = function(grunt) {
     return {
         apps: [
-            'superdesk.analytics'
+            'superdesk-publisher'
         ],
         importApps: [
-            '../index',
-            'superdesk-analytics',
             'superdesk-publisher'
         ],
         defaultRoute: '/workspace/personal',
+        validatorMediaMetadata: {
+            headline: {
+                required: true
+            },
+            alt_text: {
+                required: true
+            },
+            description_text: {
+                required: true
+            },
+            copyrightholder: {
+                required: false
+            },
+            byline: {
+                required: false
+            },
+            usageterms: {
+                required: false
+            },
+            copyrightnotice: {
+                required: false
+            }
+        },
 
         publisher: {
             protocol: 'https',
             tenant: process.env.PUBLISHER_API_SUBDOMAIN || '',
             domain: process.env.PUBLISHER_API_DOMAIN || 'localhost',
-            base: 'api/v1'
+            base: 'api/v2',
+            wsDomain: process.env.PUBLISHER_WS_DOMAIN || process.env.PUBLISHER_API_DOMAIN,
+            wsPath: process.env.PUBLISHER_WS_PATH || '',
+            wsPort: process.env.PUBLISHER_WS_PORT || '8080'
         },
 
         langOverride: {
@@ -30,20 +54,20 @@ module.exports = function(grunt) {
             }
         },
 
-        view: {
-            timeformat: 'HH:mm',
-            dateformat: 'DD.MM.YYYY',
-        },
-
         features: {
             preview: 1,
-            swimlane: {defaultNumberOfColumns: 4},
+            swimlane: {columnsLimit: 4},
             editor3: true,
-            validatePointOfInterestForImages: true,
-            editorHighlights: true
+            editorHighlights: true,
+            nestedItemsInOutputStage: true,
         },
         workspace: {
             analytics: true
         },
+        
+        raven: {
+            dsn: process.env.SUPERDESK_RAVEN_DSN || ''
+        }
     };
 };
+
